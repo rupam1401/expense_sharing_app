@@ -1,0 +1,12 @@
+{
+    "app": {
+        "port": 3000
+    },
+    "db": {
+        "host": "sql6.freesqldatabase.com",
+        "port": 3306,
+        "username": "sql6492321",
+        "password": "KGpyF677DT",
+        "database": "sql6492321"
+    }
+}
