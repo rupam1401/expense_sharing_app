@@ -38,21 +38,33 @@ async function validateRequest(requestBody) {
         if(requestBody.borrowerList.length != requestBody.numberOfShare - 1){
             valid = false;
         }
-        let getAllValidUserIdQuery = `select user_id from user_details`;
-        let validUserIds = await db_utils.selectQuery(getAllValidUserIdQuery);
-        let validUserIdList = [];
-        validUserIds.forEach(element => {
-            validUserIdList.push(element.user_id)
-        });
-        console.log("validUseIds :: ",validUserIdList);
-        requestBody.borrowerList.forEach(userId => {
-            console.log("check for :: ",userId," ",validUserIdList.indexOf(userId));
-            if(validUserIdList.indexOf(userId) === -1){
-                console.log("into if!!!!!!!!!");
-                valid = false;
-            }            
-        });
-        console.log("reach wrong!!!!!!!!!!!");
+        else{
+            let getAllValidUserIdQuery = `select user_id from user_details`;
+            let validUserIds = await db_utils.selectQuery(getAllValidUserIdQuery);
+            let validUserIdList = [];
+            validUserIds.forEach(element => {
+                validUserIdList.push(element.user_id)
+            });
+            console.log("validUseIds :: ",validUserIdList);
+            let expenseType = requestBody.expenseType;
+            if(expenseType == 'EQUAL'){
+                requestBody.borrowerList.forEach(userId => {
+                        if(validUserIdList.indexOf(userId) === -1){
+                            valid = false;
+                        }      
+                })
+            }
+            else{
+                requestBody.borrowerList.forEach(userId => {
+                    console.log("check for :: ",userId," ",validUserIdList.indexOf(userId));
+                    let expenseType = requestBody.expenseType;
+                        if(validUserIdList.indexOf(userId['borrowerId']) === -1){
+                            valid = false;
+                        }      
+                })
+
+            }
+        }
         return valid;
     } catch (error) {
         throw error;
